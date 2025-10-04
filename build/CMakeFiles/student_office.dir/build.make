@@ -73,7 +73,7 @@ student_office_autogen/timestamp: /usr/lib/qt6/libexec/moc
 student_office_autogen/timestamp: /usr/lib/qt6/libexec/uic
 student_office_autogen/timestamp: CMakeFiles/student_office.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target student_office"
-	/usr/bin/cmake -E cmake_autogen /workspace/build/CMakeFiles/student_office_autogen.dir/AutogenInfo.json ""
+	/usr/bin/cmake -E cmake_autogen /workspace/build/CMakeFiles/student_office_autogen.dir/AutogenInfo.json Release
 	/usr/bin/cmake -E touch /workspace/build/student_office_autogen/timestamp
 
 CMakeFiles/student_office.dir/codegen:
