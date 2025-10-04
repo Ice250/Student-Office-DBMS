@@ -7,6 +7,10 @@
 #include <limits>
 #include <mysql/mysql.h>
 
+// Qt headers for GUI login
+#include <QApplication>
+#include "LoginDialog.h"
+
 using namespace std;
 
 #define HOST "localhost"
@@ -505,45 +509,35 @@ void Admin::addFeeReceipt(DBManager& db, string studentID) {
 }
 
 // Main function with login and menu loops
-int main() {
+int main(int argc, char* argv[]) {
+    // Create Qt application (required for dialog)
+    QApplication qtApp(argc, argv);
+
     DBManager db;
     Admin admin;
     Student currentStudent;
-    string userType, id, password;
     bool loggedIn = false;
     bool isAdmin = false;
 
-    cout << "=== College Student Office DBMS ===" << endl;
-    cout << "1. Student Login\n2. Admin Login\n3. Exit\nChoice: ";
-    int choice;
-    cin >> choice;
-    if (choice == 3) return 0;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Clear buffer
+    // GUI Login dialog using Qt
+    LoginDialog loginDialog(
+        [&](const std::string& type, const std::string& userId, const std::string& password) {
+            return db.login(type, userId, password);
+        }
+    );
 
-    if (choice == 1) userType = "student";
-    else if (choice == 2) userType = "admin";
-    else {
-        cout << "Invalid choice. Exiting." << endl;
-        return 1;
-    }
-
-    cout << "Enter " << userType << " ID: ";
-    getline(cin, id);
-    cout << "Enter Password: ";
-    getline(cin, password);
-
-    if (db.login(userType, id, password)) {
+    if (loginDialog.exec() == QDialog::Accepted) {
         loggedIn = true;
-        isAdmin = (userType == "admin");
+        isAdmin = loginDialog.isAdmin();
         if (isAdmin) {
             cout << "Admin login successful!" << endl;
         } else {
-            currentStudent = db.getStudent(id);
+            currentStudent = db.getStudent(loginDialog.userId().toStdString());
             cout << "Student login successful!" << endl;
         }
     } else {
-        cout << "Login failed. Invalid credentials." << endl;
-        return 1;
+        // User cancelled login
+        return 0;
     }
 
     // Session loop
