@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_student_office_FILE /workspace/build/student_office)
+set(__QT_DEPLOY_TARGET_student_office_TYPE EXECUTABLE)
